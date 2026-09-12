@@ -1,3 +1,48 @@
 ---
-title: "Flare SQL"
+title: "SQL shell"
+description: "Query and manage FlareDB tables with the interactive SQL shell."
 ---
+
+Start the shell with:
+
+```bash
+flare sql
+```
+
+The shell opens a `flare>` prompt and accepts standard SQL statements. End each statement with a semicolon, and it executes right away. Multi-line statements are supported — continuation lines use the `... |` prompt.
+
+## Built-in commands
+
+| Command | Description |
+| --- | --- |
+| `help` | Show help text. |
+| `exit`, `quit` | Exit the shell. |
+
+
+## Examples
+
+Create a table, insert rows, and query them back:
+
+```sql
+
+CREATE TABLE users (id INT, name STRING);
+INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob');
+
+SELECT * FROM users;
+```
+
+List the tables you have created:
+
+```sql
+SHOW TABLES;
+```
+
+## Working with pipeline data
+
+Tables you write from a Beam pipeline with [FlareDB I/O](/io) appear here just like any other table. Query them by their fully qualified name, for example:
+
+```sql
+SELECT * FROM flare.default.scores;
+```
+
+For details on writing tables from a pipeline, see [FlareDB I/O](/io).

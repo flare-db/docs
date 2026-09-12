@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "sequoia",
-  "name": "Mintlify Starter Kit",
+  "name": "FlareDB",
   "colors": {
     "primary": "#E9692C",
     "light": "#E9692C",
@@ -11,14 +11,18 @@
     "light": "#FFFFFF",
     "dark": "#0d0d0f"
   },
-  "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
       {
         "group": "Intoduction",
         "pages": [
           "index",
-          "quickstart",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
           "usage",
           "io",
           "sql"
@@ -28,8 +32,8 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Githb",
-          "href": "https://mintlify.com/docs",
+          "anchor": "GitHub",
+          "href": "https://github.com/flare-db/flare-db",
           "icon": "github"
         },
         {
@@ -40,21 +44,12 @@
       ]
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
+    "links": [],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Support",
+      "href": "https://github.com/flare-db/flare-db/issues"
     }
   },
   "contextual": {
@@ -71,9 +66,8 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/flare-db/flare-db",
+      "linkedin": "https://www.linkedin.com/company/flare-db/"
     }
   }
 }
