@@ -1,0 +1,103 @@
+---
+title: "FlareDB I/O"
+description: "Read from and write to FlareDB tables from an Apache Beam pipeline using FlareDbIO."
+---
+
+`FlareDbIO` connects Apache Beam pipelines to FlareDB over Arrow Flight SQL. Use `FlareDbIO.read()` to run a query and read the result as Beam `Row`s, and `FlareDbIO.write()` to stream `Row`s into a FlareDB table.
+
+## Prerequisites
+
+- A running FlareDB instance. See the [Quickstart](/quickstart).
+- The FlareDB I/O artifact in your project:
+
+<Tabs>
+  <Tab title="Gradle">
+    ```groovy build.gradle
+    dependencies {
+        implementation 'com.flare-db:flareio-java:0.1.0'
+        implementation 'com.flare-db:flaredb-runner:0.1.0'
+    }
+    ```
+  </Tab>
+  <Tab title="Maven">
+    ```xml pom.xml
+    <dependency>
+      <groupId>com.flare-db</groupId>
+      <artifactId>flareio-java</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.flare-db</groupId>
+      <artifactId>flaredb-runner</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+    ```
+  </Tab>
+</Tabs>
+
+## Read from FlareDB
+
+`FlareDbIO.read()` returns a `PCollection<Row>`. Provide a SQL query with `fromQuery`; the schema is read from the query result.
+
+```java ReadPipeline.java
+PCollection<Row> rows =
+    pipeline.apply(
+        "ReadFromFlareDb",
+        FlareDbIO.read()
+            .fromQuery("SELECT id, name, score FROM flare.default.scores WHERE score > 90 ORDER BY id")
+            .withDbUrl("grpc://localhost:8099"));
+```
+
+Read options:
+
+| Method | Required | Description |
+| --- | --- | --- |
+| `fromQuery(String)` | Yes | SQL query to run on FlareDB. |
+| `withDbUrl(String)` | No | FlareDB URL. Defaults to `grpc://localhost:8099`. |
+
+## Write to FlareDB
+
+`FlareDbIO.write()` takes a `PCollection<Row>` whose rows share a schema and streams them into a FlareDB table. Set the destination with `to`.
+
+<Note>
+The input `PCollection` must have a schema. Set one with `setRowSchema` or produce it with a schema-aware transform.
+</Note>
+
+```java WritePipeline.java
+rows.apply(
+    "WriteToFlareDb",
+    FlareDbIO.<Row>write()
+        .to("flare.default.scores")
+        .withDbUrl("grpc://localhost:8099")
+        .withBatchSize(1000));
+```
+
+Write options:
+
+| Method | Required | Description |
+| --- | --- | --- |
+| `to(String)` | Yes | Destination table, for example `flare.default.scores`. |
+| `withDbUrl(String)` | No | FlareDB URL. Defaults to `grpc://localhost:8099`. |
+| `withBatchSize(int)` | No | Number of rows sent per Arrow record batch. |
+
+Rows are buffered per bundle and flushed as Arrow record batches. All rows in a write must use the same schema.
+
+## Table names
+
+FlareDB addresses tables with their fully qualified name, `<catalog>.<schema>.<table>`. The FlareDB catalog is named `flare` and the default schema is `default`, so a `scores` table in the default schema is `flare.default.scores`.
+
+## Complete example
+
+```java WritePipeline.java
+Pipeline pipeline = Pipeline.create(options);
+
+PCollection<Row> rows =
+    pipeline
+        .apply("ReadCsv", TextIO.read().from("scores.csv"))
+        .apply("ParseCsvToRows", ParDo.of(new CsvLineToRowFn()))
+        .setRowSchema(SCORES_TABLE_SCHEMA);
+
+rows.apply("WriteToFlareDb", FlareDbIO.<Row>write().to("flare.default.scores"));
+
+pipeline.run();
+```
