@@ -12,12 +12,12 @@ The flare CLI lets you initialize and manage FlareDB instances, and provides an 
 <Tabs>
   <Tab title="Linux and macOS">
     ```bash
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/flare-db/flare-db/releases/download/flare-cli-v0.1.3/flare-cli-installer.sh | sh
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/flare-db/flare-db/releases/download/flaredb-v0.2.1/flaredb-installer.sh | sh
     ```
   </Tab>
   <Tab title="Windows">
     ```powershell
-    powershell -ExecutionPolicy Bypass -c "irm https://github.com/flare-db/flare-db/releases/download/flare-cli-v0.1.3/flare-cli-installer.ps1 | iex"
+    powershell -ExecutionPolicy Bypass -c "irm https://github.com/flare-db/flare-db/releases/download/flaredb-v0.2.1/flaredb-installer.ps1 | iex"
     ```
   </Tab>
 </Tabs>
@@ -78,14 +78,6 @@ flare down
 * [Run a Beam pipeline](/usage) — add the FlareDB runner to your own project.
 * [FlareDB I/O](/io) — read from and write to FlareDB tables.
 * [SQL shell](/sql) — query your data with SQL.
+* [CLI reference](/cli) — manage local FlareDB instances and browse the available commands.
 
-## CLI reference
-
-| Command           | Description                                                                                   |
-| ----------------- | --------------------------------------------------------------------------------------------- |
-| `flare init`      | Create the local directories and download the FlareDB engine and worker components. Run once. |
-| `flare up`        | Start a local FlareDB instance on port `8099`.                                                |
-| `flare down`      | Stop the running instance.                                                                    |
-| `flare sql`       | Launch the interactive SQL shell against the local warehouse.                                 |
-| `flare --version` | Print the CLI version.                                                                        |
-| `flare --help`    | List all available commands.                                                                  |
+For a complete list of CLI commands and options, see the [CLI reference](/cli).

@@ -26,7 +26,8 @@
         "pages": [
           "usage",
           "io",
-          "sql"
+          "sql",
+          "cli"
         ]
       }
     ],

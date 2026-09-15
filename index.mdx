@@ -1,28 +1,48 @@
 ---
 title: "What is FlareDB?"
 ---
-FlareDB is a streaming database for running Apache Beam pipelines and working with the data they produce.
 
-Write pipelines using Apache Beam SDKs such as Python, Java, or Go. FlareDB executes those pipelines on a Rust-based engine and provides a unified way to process, store, and query the data.
+FlareDB is a streaming database for running Apache Beam data pipelines and making the results queryable. It unifies pipeline execution, storage, and SQL in a single Rust-based system.
 
-## One system for streams and tables
+Write pipelines using any Apache Beam SDK: Java, Python or Go. FlareDB executes them on a Rust engine, materializing the results as queryable tables in the same system.
+ 
+## The problem
+ 
+A data pipeline describes how data should move and transform, but running one is only half the job. Results typically land as output files, or get pushed to a separate database, before anyone can actually query them, for a dashboard, another pipeline needing that data, or a person running SQL. Each hop is a system to operate and a boundary the data has to cross. FlareDB replaces this into a single system.
+ 
+## How it works
 
+### One system for streams and tables
+ 
 FlareDB is built around a unified streams-and-tables architecture:
-
+ 
 - **Streams** represent data in motion — the events flowing through a pipeline.
 - **Tables** represent data at rest — materialized, persistent, and queryable state.
 
-Streams and tables are two views of the same underlying data. Streams are produced by tramsfroms/operators in the pipeline, while a table represents the materialized state of the same data.
 
-FlareDB brings this model directly into pipeline execution. As a pipeline runs, its PCollections are persisted as materialized data, allowing processing and storage to live in the same system. The resulting data can then be queried as tables using SQL or serve them to application, dashbaords and agents.
+Streams and tables are two views of the same underlying data. Streams are produced by the transforms in a pipeline and a table is the materialized state of that same data. FlareDB brings this model directly into pipeline execution — as a pipeline runs, its PCollections are persisted as a materialized state that is ready to query.
+ 
 
-## How it works
+### Write a pipeline
+ 
+Using any Apache Beam SDK — Java, Python or Go — describe how your data should be transformed. Pipelines are standard Beam: no proprietary syntax, no FlareDB-specific pipeline API.
+ 
+### FlareDB runs it
+ 
+Submit the pipeline to a running FlareDB instance. FlareDB breaks the pipeline into stages, schedules them to run in order, and streams data through each transformation step on its Rust execution engine until the pipeline completes.
+ 
+### Write results to tables
+ 
+Add a `FlareDbIO.write()` step to persist your results as a named table. From there the data is queryable with standard SQL through `flare sql`, FlareDB's interactive SQL shell, or any client speaking FlareDB's SQL interface — and reusable as input to another Beam pipeline via `FlareDbIO.read()`.
+ 
+## Capabilities
+ 
+- **Pipeline output is a table** - results are written to a table. Query them with `SELECT`, `WHERE`, `COUNT(*)` via `flare sql`.
+- **Pipelines compose through tables** - one pipeline's output table can be read as another pipeline's input, without an intermediate storage layer.
+- **Arrow end to end** - data is represented as Apache Arrow through pipeline execution, storage, and query execution.
+- **DataFusion query engine** - SQL against FlareDB tables executes on Apache DataFusion. `flare sql` and `FlareDbIO.read().fromQuery()` use the same query path.
+- **No vendor lock-in** - FlareDB runs unmodified Apache Beam pipelines through the standard Beam portability layer, no FlareDB-specific API.
 
-1. **Write a pipeline** - Using any Apache Beam SDK (Python, Java, Go), describe how your data should be transformed.
-
-2. **FlareDB runs it** - Submit the pipeline to a running FlareDB instance. FlareDB breaks your pipeline into stages, schedules them to run in order, and streams data through each transformation step until the pipeline completes.
-
-3. **Write results to tables** - Add a `FlareDbIO.write()` step to store your results.
 
 ## Get started
 

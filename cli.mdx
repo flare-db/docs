@@ -1,0 +1,34 @@
+---
+title: "CLI reference"
+description: "Initialize FlareDB, start and stop local instances, and use the SQL shell from the command line."
+---
+
+## Overview
+
+| Command | Description |
+| --- | --- |
+| `flare init` | Create the local directories and download the FlareDB engine and worker components. Run once. |
+| `flare up` | Start a local FlareDB instance on port `8099`. |
+| `flare down` | Stop the running instance. |
+| `flare sql` | Launch the interactive SQL shell against the local warehouse. |
+| `flare logs` | Stream logs for the most recent job. |
+| `flare logs <JOB_ID>` | Stream logs for a specific job. |
+| `flare --version` | Print the CLI version. |
+| `flare --help` | List all available commands. |
+
+## Job logs
+
+A `JOB-ID` is generated automatically for each submitted job. Use it to view logs for a specific job, or stream the most recent logs when you do not provide an ID.
+
+```bash
+flare logs                  # Stream logs for the most recent job
+flare logs <JOB_ID>         # Stream logs for a specific job
+```
+
+The `JOB-ID` is logged during job submission via the runner SDK.
+
+## Related guides
+
+- [Quickstart](/quickstart) - install the CLI and run a complete local WordCount example.
+- [SQL shell](/sql) - query and manage FlareDB tables from the interactive shell.
+- [Run a Beam pipeline](/usage) - submit your own pipeline jobs to a running instance.

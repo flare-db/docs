@@ -3,8 +3,7 @@ title: "Run a Beam pipeline"
 description: "Add the FlareDB runner SDK to an Apache Beam project and submit a pipeline to a FlareDB instance."
 ---
 
-FlareDB runs Apache Beam pipelines. You keep building your pipeline with the Beam SDK, and point it at `FlareRunner`, which submits the pipeline to a running FlareDB instance as a job.
-
+FlareDB runs Apache Beam pipelines as jobs. Build your pipeline with the Beam SDK as usual, then set FlareRunner as the runner to submit it to a running FlareDB instance.
 ## Prerequisites
 
 - A running FlareDB instance. See the [Quickstart](/quickstart).
@@ -18,7 +17,7 @@ Add the `flaredb-runner` artifact to your Beam project.
   <Tab title="Gradle">
     ```groovy build.gradle
     dependencies {
-        implementation 'com.flare-db:flaredb-runner:0.1.0'
+        implementation 'com.flare-db:flaredb-runner:0.2.0'
     }
     ```
   </Tab>
@@ -27,7 +26,7 @@ Add the `flaredb-runner` artifact to your Beam project.
     <dependency>
       <groupId>com.flare-db</groupId>
       <artifactId>flaredb-runner</artifactId>
-      <version>0.1.0</version>
+      <version>0.2.0</version>
     </dependency>
     ```
   </Tab>
@@ -35,7 +34,7 @@ Add the `flaredb-runner` artifact to your Beam project.
 
 ## 2. Configure the pipeline
 
-Set `FlareRunner` as the runner and configure the FlareDB instance and applicatio JAR:
+Set `FlareRunner` as the runner and configure the FlareDB instance and application JAR:
 
 ```java WordCount.java
 WordCountPipelineOptions options =
@@ -43,12 +42,13 @@ WordCountPipelineOptions options =
 
 options.setRunner(FlareRunner.class);
 options.setJobEndpoint("127.0.0.1:8099");
-options.setUberJar("build/libs/wordcount-0.1.0-all.jar");
+options.setUberJar("build/libs/wordcount-0.2.0-all.jar");
 
 Pipeline pipeline = Pipeline.create(options);
 ```
 
 The JAR is staged to FlareDB so your pipeline code is available when the job runs. Point setUberJar to the fat JAR produced by your build.
+See the full pipeline in the [WordCount example](https://github.com/flare-db/flare-db/tree/main/example/wordcount/src/main/java/com/flaredb/example).
 
 ## 3. Build the pipeline
 
@@ -89,11 +89,17 @@ These options can also be provided as command-line arguments:
 ./gradlew run --args="--jobEndpoint=127.0.0.1:8099 --uberJar=/path/to/app-all.jar"
 ```
 
-## Pipeline logs:
+## Pipeline logs
 
-// ToDo
+A `JOB-ID` is generated automatically for each submitted job. Use it to view logs for a specific job, or stream the most recent logs when you do not provide an ID.
+Usage:
 
-`flare up` prints the instance ID. The `<job-id>` is generated when a job is submitted.
+```bash
+  flare logs                  # Stream logs for the most recent job
+  flare logs <JOB_ID>         # Stream logs for a specific job
+```
+
+The `JOB-ID` is logged during job submission via the runner SDK.
 
 ## Next steps
 
