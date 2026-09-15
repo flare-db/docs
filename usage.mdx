@@ -3,8 +3,7 @@ title: "Run a Beam pipeline"
 description: "Add the FlareDB runner SDK to an Apache Beam project and submit a pipeline to a FlareDB instance."
 ---
 
-FlareDB runs Apache Beam pipelines. You keep building your pipeline with the Beam SDK, and point it at `FlareRunner`, which submits the pipeline to a running FlareDB instance as a job.
-
+FlareDB runs Apache Beam pipelines as jobs. Build your pipeline with the Beam SDK as usual, then set FlareRunner as the runner to submit it to a running FlareDB instance.
 ## Prerequisites
 
 - A running FlareDB instance. See the [Quickstart](/quickstart).
@@ -49,6 +48,7 @@ Pipeline pipeline = Pipeline.create(options);
 ```
 
 The JAR is staged to FlareDB so your pipeline code is available when the job runs. Point setUberJar to the fat JAR produced by your build.
+See the full pipeline in the [WordCount example](https://github.com/flare-db/flare-db/tree/main/example/wordcount/src/main/java/com/flaredb/example).
 
 ## 3. Build the pipeline
 
