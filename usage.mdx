@@ -18,7 +18,7 @@ Add the `flaredb-runner` artifact to your Beam project.
   <Tab title="Gradle">
     ```groovy build.gradle
     dependencies {
-        implementation 'com.flare-db:flaredb-runner:0.1.0'
+        implementation 'com.flare-db:flaredb-runner:0.2.0'
     }
     ```
   </Tab>
@@ -27,7 +27,7 @@ Add the `flaredb-runner` artifact to your Beam project.
     <dependency>
       <groupId>com.flare-db</groupId>
       <artifactId>flaredb-runner</artifactId>
-      <version>0.1.0</version>
+      <version>0.2.0</version>
     </dependency>
     ```
   </Tab>
@@ -43,7 +43,7 @@ WordCountPipelineOptions options =
 
 options.setRunner(FlareRunner.class);
 options.setJobEndpoint("127.0.0.1:8099");
-options.setUberJar("build/libs/wordcount-0.1.0-all.jar");
+options.setUberJar("build/libs/wordcount-0.2.0-all.jar");
 
 Pipeline pipeline = Pipeline.create(options);
 ```
@@ -89,11 +89,17 @@ These options can also be provided as command-line arguments:
 ./gradlew run --args="--jobEndpoint=127.0.0.1:8099 --uberJar=/path/to/app-all.jar"
 ```
 
-## Pipeline logs:
+## Pipeline logs
 
-// ToDo
+A `JOB-ID` is generated automatically for each submitted job. Use it to view logs for a specific job, or stream the most recent logs when you do not provide an ID.
+Usage:
 
-`flare up` prints the instance ID. The `<job-id>` is generated when a job is submitted.
+```bash
+  flare logs                  # Stream logs for the most recent job
+  flare logs <JOB_ID>         # Stream logs for a specific job
+```
+
+The `JOB-ID` is logged during job submission via the runner SDK.
 
 ## Next steps
 
