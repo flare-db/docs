@@ -9,7 +9,7 @@ Start the shell with:
 flare sql
 ```
 
-The shell opens a `flare>` prompt and accepts standard SQL statements. End each statement with a semicolon, and it executes right away. Multi-line statements are supported — continuation lines use the `... |` prompt.
+The shell opens a `flare>` prompt and accepts standard SQL statements. End each statement with a semicolon, and it executes right away. Multi-line statements are supported continuation lines use the `... |` prompt.
 
 ## Built-in commands
 
@@ -42,7 +42,7 @@ SHOW TABLES;
 Tables you write from a Beam pipeline with [FlareDB I/O](/io) appear here just like any other table. Query them by their fully qualified name, for example:
 
 ```sql
-SELECT * FROM flare.default.scores;
+SELECT * FROM default.default.scores;
 ```
 
 For details on writing tables from a pipeline, see [FlareDB I/O](/io).

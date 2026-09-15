@@ -14,8 +14,8 @@ description: "Read from and write to FlareDB tables from an Apache Beam pipeline
   <Tab title="Gradle">
     ```groovy build.gradle
     dependencies {
-        implementation 'com.flare-db:flareio-java:0.1.0'
-        implementation 'com.flare-db:flaredb-runner:0.1.0'
+        implementation 'com.flare-db:flareio-java:0.2.0'
+        implementation 'com.flare-db:flaredb-runner:0.2.0'
     }
     ```
   </Tab>
@@ -24,12 +24,12 @@ description: "Read from and write to FlareDB tables from an Apache Beam pipeline
     <dependency>
       <groupId>com.flare-db</groupId>
       <artifactId>flareio-java</artifactId>
-      <version>0.1.0</version>
+      <version>0.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.flare-db</groupId>
       <artifactId>flaredb-runner</artifactId>
-      <version>0.1.0</version>
+      <version>0.2.0</version>
     </dependency>
     ```
   </Tab>
@@ -37,7 +37,7 @@ description: "Read from and write to FlareDB tables from an Apache Beam pipeline
 
 ## Read from FlareDB
 
-`FlareDbIO.read()` returns a `PCollection<Row>`. Provide a SQL query with `fromQuery`; the schema is read from the query result.
+`FlareDbIO.read()` executes a SQL query on FlareDB and returns the results as a `PCollection<Row>`. The output schema is read from the query result.
 
 ```java ReadPipeline.java
 PCollection<Row> rows =
@@ -48,8 +48,6 @@ PCollection<Row> rows =
             .withDbUrl("grpc://localhost:8099"));
 ```
 
-Read options:
-
 | Method | Required | Description |
 | --- | --- | --- |
 | `fromQuery(String)` | Yes | SQL query to run on FlareDB. |
@@ -57,22 +55,18 @@ Read options:
 
 ## Write to FlareDB
 
-`FlareDbIO.write()` takes a `PCollection<Row>` whose rows share a schema and streams them into a FlareDB table. Set the destination with `to`.
+`FlareDbIO.write()` takes a `PCollection<Row>` and streams it into a FlareDB table.
+Schema is fixed per table, so every row written to a table must share the same Beam schema. 
+If the destination table does not exist, `FlareDbIO.write()` creates it automatically using the Beam Row schema.
 
-<Note>
-The input `PCollection` must have a schema. Set one with `setRowSchema` or produce it with a schema-aware transform.
-</Note>
 
 ```java WritePipeline.java
 rows.apply(
     "WriteToFlareDb",
     FlareDbIO.<Row>write()
         .to("flare.default.scores")
-        .withDbUrl("grpc://localhost:8099")
-        .withBatchSize(1000));
+        .withDbUrl("grpc://localhost:8099"));
 ```
-
-Write options:
 
 | Method | Required | Description |
 | --- | --- | --- |
@@ -80,11 +74,11 @@ Write options:
 | `withDbUrl(String)` | No | FlareDB URL. Defaults to `grpc://localhost:8099`. |
 | `withBatchSize(int)` | No | Number of rows sent per Arrow record batch. |
 
-Rows are buffered per bundle and flushed as Arrow record batches. All rows in a write must use the same schema.
+Rows are buffered within each Beam bundle and sent to FlareDB as Arrow record batches. Use `withBatchSize()` to control the maximum number of rows in each batch.
 
 ## Table names
 
-FlareDB addresses tables with their fully qualified name, `<catalog>.<schema>.<table>`. The FlareDB catalog is named `flare` and the default schema is `default`, so a `scores` table in the default schema is `flare.default.scores`.
+FlareDB addresses tables by fully qualified name: `<catalog>.<database>.<table>`. The catalog is `flare` and the database is `default`, so a `scores` table is `flare.default.scores`.
 
 ## Complete example
 
@@ -101,3 +95,99 @@ rows.apply("WriteToFlareDb", FlareDbIO.<Row>write().to("flare.default.scores"));
 
 pipeline.run();
 ```
+
+## Example pipelines
+
+The repo includes runnable examples under [flare-db/example](https://github.com/flare-db/flare-db/tree/main/example):
+
+- `flare-io-write` — loads a CSV file into a FlareDB table
+- `flare-io-read` — reads that table back into a Beam pipeline as `Row`s
+
+Together they cover the full lifecycle: write data into FlareDB, then query it either with SQL or a Beam pipeline.
+
+### Write example
+
+`flare-db/example/flare-io-write` reads `test-data/scores.csv` with `TextIO`, parses each line into a `Row` using the schema `id`, `name`, `city`, `age`, `score`, and writes it to `flare.default.scores` with `FlareDbIO.write()`.
+
+```java
+PCollection<Row> rows =
+    pipeline
+        .apply("ReadCsv", TextIO.read().from(options.getCsvFile()))
+        .apply("ParseCsvToRows", ParDo.of(new CsvLineToRowFn()))
+        .setRowSchema(SCORES_TABLE_SCHEMA);
+
+rows.apply(
+    "WriteToFlareDb",
+    FlareDbIO.<Row>write()
+        .to(options.getTable())
+        .withDbUrl(options.getDbUrl()));
+```
+
+Run it:
+
+```bash
+cd flare-db
+./gradlew :flareio-write:shadowJar # build
+./gradlew :flareio-write:run
+```
+
+This assumes FlareDB is running locally on `127.0.0.1:8099`, and writes into `flare.default.scores`.
+
+### Read example
+
+Once `flare.default.scores` has data, you can read it **two ways**.
+
+**1. Query it directly with `flare-sql`**
+
+```bash
+# Open SQL shell
+flare sql
+```
+Query
+
+```sql
+SELECT id, name, city, age, score
+FROM default.default.scores
+WHERE score > 90
+ORDER BY id
+LIMIT 5;
+```
+
+Expected result:
+
+```
++----+---------+-----------+-----+-------+
+| id | name    | city      | age | score |
++----+---------+-----------+-----+-------+
+| 2  | Lakshmi | Vancouver | 26  | 94    |
+| 6  | Priya   | Nairobi   | 30  | 91    |
+| 50 | Asha    | Cape Town | 66  | 93    |
+| 59 | Suresh  | Beijing   | 33  | 100   |
+| 63 | Karthik | Hyderabad | 43  | 93    |
++----+---------+-----------+-----+-------+
+5 rows returned (183 ms)
+
+```
+
+**2. Read it into a pipeline with `FlareDbIO.read()`**
+
+`flare-db/example/flare-io-read` runs the same query through `FlareDbIO.read()`, gets the result back as Beam `Row`s, and logs each row with a `ParDo`.
+
+```java
+PCollection<Row> rows =
+    pipeline.apply(
+        "ReadFromFlareDb",
+        FlareDbIO.read()
+            .fromQuery("SELECT id, name, score FROM flare.default.scores WHERE score > 90 ORDER BY id")
+            .withDbUrl(options.getDbUrl()));
+```
+
+Run it:
+
+```bash
+cd flare-db
+./gradlew :flareio-read:shadowJar # build
+./gradlew :flareio-read:run
+```
+
+Use `flare sql` for interactive analytics, and `FlareDbIO.read()` when you need to use the data as input to another Beam pipeline.
