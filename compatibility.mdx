@@ -1,0 +1,313 @@
+This matrix clarifies the capabilities of FlareDB. Individual capabilities are grouped by their corresponding **What / Where / When / How** question:
+
+- **What** results are being calculated?
+- **Where** in event time?
+- **When** in processing time?
+- **How** do refinements of results relate?
+
+For more details on the What / Where / When / How breakdown, see the [Streaming 102](https://www.oreilly.com/radar/the-world-beyond-batch-streaming-102/) post on O'Reilly.
+
+## How to read the tables
+
+Each row is a property. Cells answer: *does FlareDB have this property?*
+
+<table>
+  <colgroup>
+    <col width="20%" />
+    <col width="80%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Sign</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>🟡</td>
+      <td>Partially</td>
+    </tr>
+    <tr>
+      <td>🗓️</td>
+      <td>Planned</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## What is being computed?
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ParDo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>GroupByKey</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Flatten</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Combine</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Composite Transforms</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Side Inputs</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Source API</td>
+      <td>🟡</td>
+    </tr>
+    <tr>
+      <td>Metrics</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Stateful Processing</td>
+      <td>🟡</td>
+    </tr>
+  </tbody>
+</table>
+
+## Bounded Splittable DoFn Support Status
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Base</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Side Inputs</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Splittable DoFn Initiated Checkpointing</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Dynamic Splitting</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Bundle Finalization</td>
+      <td>🗓️</td>
+    </tr>
+  </tbody>
+</table>
+
+## Unbounded Splittable DoFn Support Status
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Base</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Side Inputs</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Splittable DoFn Initiated Checkpointing</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Dynamic Splitting</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Bundle Finalization</td>
+      <td>🗓️</td>
+    </tr>
+  </tbody>
+</table>
+
+## Where in event time?
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Global windows</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Fixed windows</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Sliding windows</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Session windows</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Custom windows</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Custom merging windows</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Timestamp control</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+## When in processing time?
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Configurable triggering</td>
+      <td>🟡</td>
+    </tr>
+    <tr>
+      <td>Event-time triggers</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Processing-time triggers</td>
+      <td>🟡</td>
+    </tr>
+    <tr>
+      <td>Count triggers</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Composite triggers</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Allowed lateness</td>
+      <td>🟡</td>
+    </tr>
+    <tr>
+      <td>Timers</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+## How do refinements relate?
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Discarding</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Accumulating</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+## Additional common features not yet part of the Beam model
+
+<table>
+  <colgroup>
+    <col width="60%" />
+    <col width="40%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>FlareDB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Drain</td>
+      <td>🗓️</td>
+    </tr>
+    <tr>
+      <td>Checkpoint</td>
+      <td>🟡</td>
+    </tr>
+    <tr>
+      <td>Key-ordered delivery</td>
+      <td>🗓️</td>
+    </tr>
+  </tbody>
+</table>
+
