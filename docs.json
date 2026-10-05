@@ -27,7 +27,8 @@
           "usage",
           "io",
           "sql",
-          "cli"
+          "cli",
+          "compatibility"
         ]
       }
     ],
