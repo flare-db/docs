@@ -28,8 +28,8 @@
           "io",
           "sql",
           "cli",
-          "Compatibility",
-          "Python"
+          "compatibility",
+          "python"
         ]
       }
     ],
