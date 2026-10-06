@@ -16,8 +16,8 @@ A data pipeline describes how data should move and transform, but running one is
  
 FlareDB is built around a unified streams-and-tables architecture:
  
-- **Streams** represent data in motion — the events flowing through a pipeline.
-- **Tables** represent data at rest — materialized, persistent, and queryable state.
+- **Streams** represent data in motion, the events flowing through a pipeline.
+- **Tables** represent data at rest, materialized, persistent, and queryable state.
 
 
 Streams and tables are two views of the same underlying data. Streams are produced by the transforms in a pipeline and a table is the materialized state of that same data. FlareDB brings this model directly into pipeline execution — as a pipeline runs, its PCollections are persisted as a materialized state that is ready to query.
@@ -25,11 +25,11 @@ Streams and tables are two views of the same underlying data. Streams are produc
 
 ### Write a pipeline
  
-Using any Apache Beam SDK — Java, Python or Go — describe how your data should be transformed. Pipelines are standard Beam: no proprietary syntax, no FlareDB-specific pipeline API.
+Using any Apache Beam SDK: Java, Python or Go, describe how your data should be transformed. Pipelines are standard Beam: no proprietary syntax, no FlareDB-specific pipeline API.
  
 ### FlareDB runs it
  
-Submit the pipeline to a running FlareDB instance. FlareDB breaks the pipeline into stages, schedules them to run in order, and streams data through each transformation step on its Rust execution engine until the pipeline completes.
+Submit the pipeline to a running FlareDB instance. FlareDB breaks the pipeline into stages, schedules them to run, and streams data through each transformation step on its Rust execution engine until the pipeline completes.
  
 ### Write results to tables
  
