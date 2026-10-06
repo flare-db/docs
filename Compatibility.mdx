@@ -1,1 +1,93 @@
+This matrix clarifies the capabilities of FlareDB. Individual capabilities are grouped by their corresponding **What / Where / When / How** question:
 
+- **What** results are being calculated?
+- **Where** in event time?
+- **When** in processing time?
+- **How** do refinements of results relate?
+
+For more details on the What / Where / When / How breakdown, see the [Streaming 102](https://www.oreilly.com/radar/the-world-beyond-batch-streaming-102/) post on O'Reilly.
+
+## How to read the tables
+
+Each row is a property. Cells answer: _does FlareDB have this property?_
+
+| Sign | Meaning |
+| --- | --- |
+| ✅ | Yes |
+| 🟡 | Partially |
+| 🗓️ | Planned |
+
+---
+
+## What is being computed?
+
+| Feature | FlareDB |
+| --- | --- |
+| ParDo | ✅ |
+| GroupByKey | ✅ |
+| Flatten | ✅ |
+| Combine | ✅ |
+| Composite Transforms | ✅ |
+| Side Inputs | 🗓️ |
+| Source API | 🟡 |
+| Metrics | 🗓️ |
+| Stateful Processing | 🟡 |
+
+## Bounded Splittable DoFn Support Status
+
+| Feature | FlareDB |
+| --- | --- |
+| Base | ✅ |
+| Side Inputs | 🗓️ |
+| Splittable DoFn Initiated Checkpointing | 🗓️ |
+| Dynamic Splitting | 🗓️ |
+| Bundle Finalization | 🗓️ |
+
+## Unbounded Splittable DoFn Support Status
+
+| Feature | FlareDB |
+| --- | --- |
+| Base | 🗓️ |
+| Side Inputs | 🗓️ |
+| Splittable DoFn Initiated Checkpointing | 🗓️ |
+| Dynamic Splitting | 🗓️ |
+| Bundle Finalization | 🗓️ |
+
+## Where in event time?
+
+| Feature | FlareDB |
+| --- | --- |
+| Global windows | ✅ |
+| Fixed windows | ✅ |
+| Sliding windows | ✅ |
+| Session windows | 🗓️ |
+| Custom windows | 🗓️ |
+| Custom merging windows | 🗓️ |
+| Timestamp control | ✅ |
+
+## When in processing time?
+
+| Feature | FlareDB |
+| --- | --- |
+| Configurable triggering | 🟡 |
+| Event-time triggers | ✅ |
+| Processing-time triggers | 🟡 |
+| Count triggers | ✅ |
+| Composite triggers | ✅ |
+| Allowed lateness | 🟡 |
+| Timers | ✅ |
+
+## How do refinements relate?
+
+| Feature | FlareDB |
+| --- | --- |
+| Discarding | ✅ |
+| Accumulating | ✅ |
+
+## Additional common features not yet part of the Beam model
+
+| Feature | FlareDB |
+| --- | --- |
+| Drain | 🗓️ |
+| Checkpoint | 🟡 |
+| Key-ordered delivery | 🗓️ |
