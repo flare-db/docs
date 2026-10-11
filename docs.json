@@ -10,7 +10,8 @@
   },
   "background": {
     "light": "#FFFFFF",
-    "dark": "#0d0d0f"
+    "dark": "#0d0d0f",
+    "decoration": "gradient"
   },
   "navigation": {
     "pages": [
