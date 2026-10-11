@@ -73,5 +73,6 @@
       "github": "https://github.com/flare-db/flare-db",
       "linkedin": "https://www.linkedin.com/company/flare-db/"
     }
-  }
+  },
+  "description": "FlareDB is an Apache Beam native streaming database for running batch and streaming data pipelines"
 }
