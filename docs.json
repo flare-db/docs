@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "sequoia",
+  "theme": "luma",
   "name": "FlareDB",
   "favicon": "/flare-mascot-face.svg",
   "colors": {
@@ -45,6 +45,11 @@
           "anchor": "Blog",
           "href": "https://www.flare-db.com/blog",
           "icon": "newspaper"
+        },
+        {
+          "anchor": "Discord",
+          "icon": "discord",
+          "href": "https://discord.gg/uRphm5uJ8"
         }
       ]
     }
@@ -62,12 +67,9 @@
       "copy",
       "view",
       "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
+      "claude"
+    ],
+    "display": "toc"
   },
   "footer": {
     "socials": {
@@ -75,5 +77,23 @@
       "linkedin": "https://www.linkedin.com/company/flare-db/"
     }
   },
-  "description": "FlareDB is an Apache Beam native streaming database for running batch and streaming data pipelines"
+  "description": "FlareDB is an Apache Beam native streaming database for running batch and streaming data pipelines",
+  "icons": {
+    "library": "fontawesome"
+  },
+  "seo": {
+    "metatags": {
+      "og:site_name": "FlareDB"
+    },
+    "indexing": "all"
+  },
+  "interaction": {
+    "drilldown": false
+  },
+  "metadata": {
+    "timestamp": true
+  },
+  "styling": {
+    "eyebrows": "section"
+  }
 }
