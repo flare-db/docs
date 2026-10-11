@@ -1,31 +1,90 @@
 ---
 title: "CLI reference"
-description: "Initialize FlareDB, start and stop local instances, and use the SQL shell from the command line."
+description: "Initialize FlareDB, start and stop local instances, manage versions, and use the SQL shell from the command line."
 ---
 
 ## Overview
 
 | Command | Description |
 | --- | --- |
-| `flare init` | Create the local directories and download the FlareDB engine and worker components. Run once. |
+| `flare init` | Create the local directories and download the latest FlareDB engine and Beam Java worker. Its a one time setup. |
 | `flare up` | Start a local FlareDB instance on port `8099`. |
 | `flare down` | Stop the running instance. |
 | `flare sql` | Launch the interactive SQL shell against the local warehouse. |
+| `flare version` | Show installed versions and available updates. |
+| `flare update` | Update FlareDB and/or the Beam Java worker. |
 | `flare logs` | Stream logs for the most recent job. |
 | `flare logs <JOB_ID>` | Stream logs for a specific job. |
 | `flare --version` | Print the CLI version. |
 | `flare --help` | List all available commands. |
 
+## Installing the CLI
+
+If you are on **Linux or macOS**, please run the following command to install the CLI:
+
+```bash
+curl -sSL https://install.flare-db.com | bash
+```
+
+The script automatically detects your platform, downloads and installs the latest version of CLI, If you are on **Windows** use WSL.
+
+
+After installing the CLI, run:
+
+```bash
+flare init
+```
+
+This command performs the initial setup by creating the required local directories and downloading the FlareDB binary and Apache Beam worker JAR.
+
+The initialization only needs to be **completed once**. After that, you can use the `flare up` and `flare down` commands to manage the instance.
+See the [usage guide](/usage) to learn how to submit pipeline job to the FlareDB instance
+
 ## Job logs
 
-A `JOB-ID` is generated automatically for each submitted job. Use it to view logs for a specific job, or stream the most recent logs when you do not provide an ID.
-
+A `JOB-ID` is generated automatically for each submitted job. Use it to view logs for a specific job, or stream the most recent logs when you do not provide an ID. Logs are followed continuously by default.
 ```bash
 flare logs                  # Stream logs for the most recent job
 flare logs <JOB_ID>         # Stream logs for a specific job
 ```
 
-The `JOB-ID` is logged during job submission via the runner SDK.
+The `JOB-ID` is logged during job submission via the runner SDK. 
+
+
+
+## Versions and Updates
+
+The `version` command prints the installed CLI , FlareDB, and beam-java-worker versions, then checks for newer releases and reports how to upgrade each one.
+
+```bash
+flare version
+```
+
+If you see new available versions, use `update` command to download the latest FlareDB engine and Beam Java worker. Pass `--db` or `--java-worker` to update a specfic component. Older versions left in the bin directory are removed once the new one is dowloaded.
+
+if no flags are provided it updates both the db and worker to their latest versions
+
+```bash
+flare update                 # update everything
+flare update --db            # update only the FlareDB binary
+flare update --java-worker   # update only the worker jar
+```
+
+While updating, stop any active FlareDB instance and run the updates.
+
+```bash
+flare down
+flare update
+flare up
+```
+
+## Updating the CLI
+
+Run the installer script again to upgrade the `flare-cli`. It checks for a newer release and upgrades automatically, or if there are no new updates it reports that you are already on the latest version.
+
+```bash
+curl -sSL https://install.flare-db.com | bash
+```
 
 ## Related guides
 
