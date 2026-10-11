@@ -9,20 +9,13 @@ This guide walks you through installing FlareDB, starting a local instance, and 
 
 The flare CLI lets you initialize and manage FlareDB instances, and provides an interactive SQL shell for querying your data.
 
-<Tabs>
-  <Tab title="Linux and macOS">
-    ```bash
-     curl --proto '=https' --tlsv1.2 -LsSf https://github.com/flare-db/flare-db/releases/download/flare-cli-v0.3.2/flare-cli-installer.sh | sh
-    ```
-  </Tab>
-  <Tab title="Windows">
-    ```powershell
-    powershell -ExecutionPolicy Bypass -c "irm https://github.com/flare-db/flare-db/releases/download/flare-cli-v0.3.2/flare-cli-installer.ps1 | iex"
-    ```
-  </Tab>
-</Tabs>
+```bash
+curl -sSL https://install.flare-db.com | bash
+```
 
-You can also download the binary for your platform from the [GitHub releases page](https://github.com/flare-db/flare-db/releases).
+The installer script detects your platform (**linux or macOS**), downloads the latest release, and installs the flare CLI.
+
+If you are on Windows, use WSL.
 
 ## 2. Initialize FlareDB
 
@@ -68,16 +61,11 @@ To learn how to build and run your own pipelines, see [Run a Beam pipeline](/usa
 ```bash
 flare down
 ```
-
-<Warning>
-`flare down` stops the running FlareDB instance. Run `flare up` again when you want to start it.
-</Warning>
+This stops the running FlareDB instance. Run `flare up` again when you want to start it.
 
 ## Next steps
 
-* [Run a Beam pipeline](/usage) — add the FlareDB runner to your own project.
-* [FlareDB I/O](/io) — read from and write to FlareDB tables.
-* [SQL shell](/sql) — query your data with SQL.
-* [CLI reference](/cli) — manage local FlareDB instances and browse the available commands.
+* [Python quickstart](/python) - Getting started with running python pipelines on FlareDB
+* [Run a Beam pipeline](/usage) - Add the FlareDB runner to your own project.
 
 For a complete list of CLI commands and options, see the [CLI reference](/cli).
