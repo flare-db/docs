@@ -1,0 +1,65 @@
+---
+title: "FlareDB Skills for Agents"
+---
+FlareDB Skills give AI coding agents the knowledge to build, test, debug, and run Apache Beam pipelines. Each skill focuses on a specific task, and agents can combine them when needed.
+
+## Available Skills
+
+| Skill | What it does |
+|---|---|
+| `beam-pipeline` | Helps agents write and test Apache Beam pipelines, choose transforms and connectors, and follow FlareDB's supported features. |
+| `flaredb-skills` | Helps agents install and manage FlareDB, start local instances, submit pipelines, and inspect job logs. |
+| `beam-debugging` | Helps agents diagnose pipeline errors, incorrect results, and performance issues. |
+| `beam-streaming` | Guides agents through streaming concepts such as windows, triggers, watermarks, and stateful processing for runners other than FlareDB. |
+
+## How They Work Together
+
+The skills complement each other, allowing an agent to handle a task from pipeline development through execution and debugging.
+
+For example, if you ask an agent to analyze thousands of log files:
+
+1. **`beam-pipeline`** designs a Python Beam pipeline to process the files and produce a concise summary.
+2. **`beam-streaming`** provides the guidance on how to write a streaming pipeline correctly.
+3. **`flaredb-skills`** manages the local FlareDB environment and runs the pipeline after you approve the execution plan.
+4. **`beam-debugging`** helps diagnose failures or incorrect results if something goes wrong.
+
+
+## Example
+
+Once the skills are installed, simply describe your task to your coding agent:
+
+> Analyze all the CSV files in this directory, identify schema inconsistencies, and report the affected files with a summary of the issues.
+
+The agent can use `beam-pipeline` to construct the processing pipeline and `flaredb-skills` to run it on FlareDB, rather than reading every file into its context.
+
+The goal is simple: **let AI agents process large amounts of data efficiently using Apache Beam and FlareDB, while keeping only the relevant results in their context.**
+
+## Review
+
+Before running a pipeline on FlareDB, the agent presents a **pipeline brief** for your review and approval. This lets you verify what the pipeline will do before the agent executes the pipeline on FlareDB
+Once approved, the agent can start FlareDB, execute the pipeline, inspect the job logs, and verify the results.
+
+**Note:** Sometimes you agent harness might prevent your agents from running CLI commands, in that case please run the commands 
+for your agents.
+
+
+## Install the skills
+
+Make sure Node.js and `npx` are available, then run:
+
+```bash
+npx skills add flare-db/skills
+```
+
+The installer will guide you through these choices:
+
+1. **Select skills** — select the skills you want to install. You can install all four:
+   - `beam-pipeline`
+   - `flaredb-skills`
+   - `beam-debugging`
+   - `beam-streaming`
+2. **Select coding agents** — choose the agents you use, such as Codex, Cursor, Gemini CLI, GitHub Copilot or others shown by the installer.
+3. **Choose installation scope** — select Global to make the skills available across projects, or choose another scope if offered and preferred.
+4. **Confirm installation** — review the summary and approve the installation.
+
+The installer should report that installation is complete.

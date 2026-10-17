@@ -30,7 +30,8 @@
           "sql",
           "cli",
           "compatibility",
-          "python"
+          "python",
+          "agent-skills"
         ]
       }
     ],
